@@ -53,12 +53,15 @@ class Nhentai(commands.Cog):
     async def waifu_bomb(self, ctx, tag, num):
         i = 0
         num = int(num)
-        for i in range(num): 
-            response = requests.get(f"https://api.waifu.im/random/?selected_tags={tag}")
-            data = response.json()
-            url = data['images'][0]['url']
-            await ctx.send(url)
-            i += 1
+        if (num > 10):
+            await ctx.send("até 10!")
+        else:
+            for i in range(num): 
+                response = requests.get(f"https://api.waifu.im/random/?selected_tags={tag}")
+                data = response.json()
+                url = data['images'][0]['url']
+                await ctx.send(url)
+                i += 1
 def setup(bot):
     bot.add_cog(Nhentai(bot))
     

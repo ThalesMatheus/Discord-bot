@@ -7,6 +7,7 @@ from discord.ext import commands
 from decouple import config
 
 bot = commands.Bot("%")
+intents = discord.Intents.all()
 
 @bot.command()
 async def load(ctx, extension):
@@ -15,7 +16,6 @@ async def load(ctx, extension):
 @bot.command()
 async def shutdown(ctx):
     await ctx.bot.logout()
-
 
 for file in os.listdir('./tasks'):
     if file.endswith('.py'):
