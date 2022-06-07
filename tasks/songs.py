@@ -32,7 +32,7 @@ class Songs(commands.Cog):
             await ctx.voice_client.move_to(voice_channel)
     
     @commands.command()
-    async def play(self, ctx, ll):
+    async def play(self, ctx, *ll):
         song = str(ll)
         vc = ctx.voice_client
         with youtube_dl.YoutubeDL(YDL_OPTIONS) as ydl:
