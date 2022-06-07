@@ -7,7 +7,7 @@ import json
 from discord.ext import commands
 import socket, os
 
-bot = commands.Bot("%")
+bot = commands.Bot("#")
 
 class Nhentai(commands.Cog):
     def __init__(self, bot):
