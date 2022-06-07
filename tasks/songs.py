@@ -4,6 +4,8 @@ from discord.ext import commands
 import youtube_dl
 import discord
 import ffmpeg
+from slugify import slugify
+
 FFMPEG_OPTIONS = {'before_options': '-reconnect 1', 'options': '-vn'}
 YDL_OPTIONS = {'format':"bestaudio"}
 bot = commands.Bot("#")
@@ -35,23 +37,25 @@ class Songs(commands.Cog):
     async def play(self, ctx, *ll):
         song = str(ll)
         vc = ctx.voice_client
-        queue = []
+        arr = []
+        url = slugify(ll)
+        print(url)
         with youtube_dl.YoutubeDL(YDL_OPTIONS) as ydl:
 
             if not ("youtube.com/watch?" in song or "https://youtu.be/" in song):
                 message = (" ").join(song)
                 result = await self.search_song(1, song, get_url=True)
                 url2 = result
-                source = await discord.FFmpegOpusAudio.from_probe(url2, **FFMPEG_OPTIONS)
-                source.append()
+                arr.append(url2)
+                print(arr)
+                source = await discord.FFmpegOpusAudio.from_probe(arr[0], **FFMPEG_OPTIONS)
                 vc.play(source)
+                arr.remove[0]           
 
-            else:
-
-                info = ydl.extract_info(ll, download=False)
-                url2 = info['formats'][0]['url']
-                source = await discord.FFmpegOpusAudio.from_probe(url2, **FFMPEG_OPTIONS)
-                vc.play(source)
+            info = ydl.extract_info(url, download=False)
+            url2 = info['formats'][0]['url']
+            source = await discord.FFmpegOpusAudio.from_probe(url2, **FFMPEG_OPTIONS)
+            vc.play(source)
 
 
     @commands.command()
