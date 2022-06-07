@@ -62,6 +62,7 @@ class Nhentai(commands.Cog):
                 url = data['images'][0]['url']
                 await ctx.send(url)
                 i += 1
+      
 def setup(bot):
     bot.add_cog(Nhentai(bot))
     

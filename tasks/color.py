@@ -75,7 +75,7 @@ class Color(commands.Cog):
                 for x in arr:
                     embed.add_field(name="Monochromatic", value=f"{x}", inline=False)
                 await ctx.send(embed=embed)
-                
+
 
 
         elif (len(vs) == 2):

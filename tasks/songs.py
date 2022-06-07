@@ -35,6 +35,7 @@ class Songs(commands.Cog):
     async def play(self, ctx, *ll):
         song = str(ll)
         vc = ctx.voice_client
+        queue = []
         with youtube_dl.YoutubeDL(YDL_OPTIONS) as ydl:
 
             if not ("youtube.com/watch?" in song or "https://youtu.be/" in song):
@@ -42,6 +43,7 @@ class Songs(commands.Cog):
                 result = await self.search_song(1, song, get_url=True)
                 url2 = result
                 source = await discord.FFmpegOpusAudio.from_probe(url2, **FFMPEG_OPTIONS)
+                source.append()
                 vc.play(source)
 
             else:
@@ -56,6 +58,35 @@ class Songs(commands.Cog):
     async def exit(self, ctx):
         if ctx.voice_client is not None:
             return await ctx.voice_client.disconnect()
-            
+    
+    @commands.command(name='skip')
+    async def _skip(self, ctx):
+        if ctx.voice_client is not None:
+            return await ctx.voice_client.skip()
+        
+    @commands.command(name="seek")
+    async def seek_command(self, ctx, position: str):
+        player = self.get_player(ctx)
+
+        if player.queue.is_empty:
+            raise QueueIsEmpty
+
+        if not (match := re.match(TIME_REGEX, position)):
+            raise InvalidTimeString
+
+        if match.group(3):
+            secs = (int(match.group(1)) * 60) + (int(match.group(3)))
+        else:
+            secs = int(match.group(1))
+
+        await player.seek(secs * 1000)
+        await ctx.send("Seeked.")
+    
 def setup(bot):
     bot.add_cog(Songs(bot))
+    
+def get_player(self, obj):
+    if isinstance(obj, commands.Context):
+        return self.wavelink.get_player(obj.guild.id, cls=Player, context=obj)
+    elif isinstance(obj, discord.Guild):
+        return self.wavelink.get_player(obj.id, cls=Player)
