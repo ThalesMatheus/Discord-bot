@@ -6,7 +6,7 @@ import discord
 from discord.ext import commands
 from decouple import config
 
-bot = commands.Bot("%")
+bot = commands.Bot("#")
 intents = discord.Intents.all()
 
 @bot.command()

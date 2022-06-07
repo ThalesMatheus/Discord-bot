@@ -1,7 +1,7 @@
 from discord.ext import commands
 import requests
 
-bot = commands.Bot("%")
+bot = commands.Bot("#")
 
 
 class Clear(commands.Cog):

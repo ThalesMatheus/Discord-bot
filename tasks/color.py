@@ -10,7 +10,7 @@ import colorsys
 import math
 import discord
 
-bot = commands.Bot("%")
+bot = commands.Bot("#")
 
 class Color(commands.Cog):
     def __init__(self, bot):

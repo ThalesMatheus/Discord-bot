@@ -6,7 +6,7 @@ import discord
 import ffmpeg
 FFMPEG_OPTIONS = {'before_options': '-reconnect 1', 'options': '-vn'}
 YDL_OPTIONS = {'format':"bestaudio"}
-bot = commands.Bot("%")
+bot = commands.Bot("#")
 intents = discord.Intents.all()
 
 class Songs(commands.Cog):
