@@ -44,6 +44,9 @@ class Color(commands.Cog):
         r = int(rs)
         g = int(gs)
         b = int(bs)
+        cor_rtn = rgbd(rs, gs, bs)
+        cor_rtn = cor_rtn.lstrip('#')
+        cor_temp = int(f"{cor_rtn}", 16)
         (h, s, v) = colorsys.rgb_to_hsv(r, g, b)
         vs = str(v)
         if (len(vs) == 3):
@@ -55,8 +58,9 @@ class Color(commands.Cog):
             newV = v - tonhos
             x = 25
             y = 1
-
             arr = []
+            print(newV)
+            
             for y in range(10):
                 arr.append(f"{trunc(h, 4)}, {trunc(s, 4)}, {newV + x * y}")
                 y += 1
@@ -66,7 +70,7 @@ class Color(commands.Cog):
                 embed = discord.Embed(
                     title=f"{ath} Color pallet", 
                     description="description",
-                    colour = 16252900
+                    colour = cor_temp
                     )
                 
                 pfp = img.avatar_url
@@ -89,10 +93,33 @@ class Color(commands.Cog):
             for y in range(10):
                 await ctx.send(f"{h}, {s}, {newV + x * y}")
                 y += 1
+                if (y == 10):
+                    ath = ctx.message.author.name
+                    img = ctx.message.author
+                    embed = discord.Embed(
+                    title=f"{ath} Color pallet", 
+                    description="description",
+                    colour = cor_temp
+                    )
+                
+                pfp = img.avatar_url
+                embed.set_thumbnail(url=f'{pfp}')
+
+                for x in arr:
+                    embed.add_field(name="Monochromatic", value=f"{x}", inline=False)
+                await ctx.send(embed=embed)
         
 def setup(bot):
     bot.add_cog(Color(bot))
-    
+
+
+def rgbd(rc, gc, bc):
+       r = int(rc)
+       g = int(gc)
+       b = int(bc)
+       color = '#%02x%02x%02x' % (r, g, b)
+       return (color)
+
 def trunc(num,n):
     temp = str(num)
     for x in range(len(temp)):
